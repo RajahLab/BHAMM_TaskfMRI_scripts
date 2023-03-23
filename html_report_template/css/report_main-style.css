@@ -1,0 +1,82 @@
+/* Swetha Rajagopal - css for a simple layout.*/
+body{
+    background-color: MintCream;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+main{
+    /* background-color: beige; */
+    margin: 20px;
+
+}
+header{
+    background-color: Teal;
+    color: white;
+    height: 50px;
+    /* padding-left: : 10px; */
+}
+table.example {
+  border: thin solid lightgray;
+}
+
+table.example th,
+table.example td {
+  border: thin solid lightgray;
+  min-width: 75px;
+  text-align: center;
+  padding: 5px;
+}
+
+table.example .red-circle {
+  border: thin solid red;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  text-align: center;
+  margin: auto;
+}
+table {
+    border-collapse: collapse;
+    text-align: right;
+    padding-left: 10px;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+}
+table tr {
+    border-bottom: 1px solid
+}
+table th, table td {
+    padding: 10px 20px;
+}
+nav{
+    padding: 10px;
+    background-color: Teal;
+    position: sticky;
+    top:0;
+}
+nav ul{
+    margin: 0;
+}
+nav li{
+    display: inline;
+}
+nav a{
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 20px;
+}
+nav a:hover{
+    background-color: grey;
+}
+footer {
+  height: 30px;
+  background-color: Teal;
+}
+footer p{
+    padding: 10px 0 0 10px;
+}
+footer a{
+    color: white;
+}

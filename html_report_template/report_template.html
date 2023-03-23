@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="eng">
+  <head>
+    <title>Report for {{ ID }}</title>
+    <link rel="stylesheet" href="css/report_main-style.css">
+  </head>
+  <body>
+    <a id="top"></a>
+    <nav id="nav">
+        <ul>
+            <li><a href="#firstsection">Summary</a></li>
+            {% if scrubbed_scans_table|length != 0 %}<li><a href="#secondsection">Scrubbed Scans</a></li>{% endif %}
+            <li><a href="#thirdsection">FD Plots</a></li>
+            {% if censor_onsets|length != 0 %} <li><a href="#fourthsection">Censored Onsets</a></li> {% endif %}
+
+        </ul>
+    </nav>
+
+    <main>
+    <section id="firstsection">
+      <h2> Summary </h2>
+      <ul>
+        <li> Subject ID: {{ ID }} </li>
+        <li> FD Threshold: {{ fthresh }}mm</li>
+        <li> DVars Threshold: {{ dvars_thresh }} </li>
+        <li> Confounds removed: {{ confounds }} </li>
+      </ul>
+    </section>
+
+    {% if scrubbed_scans_table|length != 0 %}
+    <section id="secondsection">
+      <h2 > Table - Scrubbed Scans </h2>
+
+        {{ styled_df_str }}
+
+
+    </section>
+    {% endif %}
+
+    <section id="thirdsection">
+      <h2 >FD & Dvars Plots</h2>
+      {% if (fig_list|length)%2 == 0 %}
+        {% set start=0 %}
+        {% set end=(fig_list|length)-1 %}
+      {% else %}
+        {% set start=1 %}
+        {% set end=(fig_list|length)-2 %}
+      {% endif %}
+      <table>
+
+      {% for i in range(0,end,2) %}
+
+        {% set f = fig_list[i] %}
+
+        {% if path_exists(f) %}
+          {% set f_name = f |basename %}
+          {% set f_dirname = f | dirname |basename %}
+          <tr>
+            <td>
+              Task: {{f_name.split('.')[0].split('_')[1].split('-')[1]}}. Run: {{f_name.split('.')[0].split('_')[2].split('-')[1]}}
+              <br>
+              <img src={{ f_dirname~"/"~f_name }} width="600">
+            </td>
+          {% endif %}
+
+          {% set f1 = fig_list[i+1] %}
+          {% if path_exists(f1) %}
+            {% set f1_name = f1 |basename %}
+            {% set f1_dirname = f1 | dirname |basename %}
+            <td>
+              Task: {{f1_name.split('.')[0].split('_')[1].split('-')[1]}}. Run: {{f1_name.split('.')[0].split('_')[2].split('-')[1]}}
+              <br>
+              <img src={{ f1_dirname~"/"~f1_name }} width="600">
+            </td>
+          {% endif %}
+        </tr>
+
+      {% endfor %}
+
+      {%if start == 1%}
+        {% set f = fig_list[end+1] %}
+
+        {% if path_exists(f) %}
+          {% set f_name = f |basename %}
+          {% set f_dirname = f | dirname |basename %}
+          <tr>
+            <td>
+              Task: {{f_name.split('.')[0].split('_')[1].split('-')[1]}}. Run: {{f_name.split('.')[0].split('_')[2].split('-')[1]}}
+              <br>
+              <img src={{ f_dirname~"/"~f_name }} width="600">
+            </td>
+          </tr>
+        {% endif %}
+      {%endif%}
+
+      </table>
+    </section>
+
+    {% if censor_onsets|length != 0 %}
+    <section id="fourthsection">
+      <h2 >Censored Onsets</h2>
+      <table>
+        <tr>
+          <th> Onset name</th>
+          <td> Onset(s) to be removed </td>
+
+        </tr>
+        {% for key, value in censor_onsets.items() %}
+        <tr>
+          <th> {{ key.replace("_", " ") }} </th>
+          <td> {{ value }} </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </section>
+    {% endif %}
+  </main>
+  <footer>
+    <p><a href="#top">Back To Top</a></p>
+  </footer>
+  </body>
+</html>
