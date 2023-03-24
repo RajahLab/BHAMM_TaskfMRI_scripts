@@ -181,7 +181,6 @@ for ID in IDs:
         ##Scrub data
         if len(bad_vols)>0:
 
-            #TODO: count number of bad volumes>25%
             count_enc, count_ret, percent_badVols_enc, percent_badVols_ret, sum_enc, sum_ret= pe.count_bad_vols_task(bad_vols, timing)
             count_enc_all_runs+=count_enc
             count_ret_all_runs+=count_ret
