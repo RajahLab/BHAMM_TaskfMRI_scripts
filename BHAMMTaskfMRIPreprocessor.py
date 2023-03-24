@@ -51,7 +51,7 @@ plot_path=os.path.join(reports_path, 'QC_Realignment_Plots')
 if not(os.path.isdir(plot_path)):
     os.mkdir(plot_path)
 
-#Output path for final prerpocessed nifti files
+#Output path for final preprocessed nifti files
 nifti_output_path=os.path.join('')
 if not(os.path.isdir(nifti_output_path)):
     os.mkdir(nifti_output_path)
