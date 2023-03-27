@@ -1,0 +1,55 @@
+																
+%------------------------------------------------------------------------																
+																
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%															
+	%  General Section Start  %															
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%															
+																
+prefix          subjXXX % prefix for session file and datamat file														
+brain_region    0.15	% threshold or file name for brain region														
+win_size        8       % temporal window size in scans														
+across_run      1       % 1 for merge data across all run, 0 for within each run														
+single_subj     0       % 1 for single subject analysis, 0 for normal analysis														
+																
+	%%%%%%%%%%%%%%%%%%%%%%%%%															
+	%  General Section End  %															
+	%%%%%%%%%%%%%%%%%%%%%%%%%															
+																
+%------------------------------------------------------------------------																
+																
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%															
+	%  Condition Section Start  %															
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%															
+																
+															
+												
+																
+																
+% ... following above pattern for more conditions																
+																
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%															
+	%  Condition Section End  %															
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%															
+																
+%------------------------------------------------------------------------																
+																
+	%%%%%%%%%%%%%%%%%%%%%%%															
+	%  Run Section Start  %															
+	%%%%%%%%%%%%%%%%%%%%%%%															
+																
+																
+																
+data_files     
+
+															
+	%%%%%%%%%%%%%%%%%%%%%															
+	%  Run Section End  %															
+	%%%%%%%%%%%%%%%%%%%%%															
+																
+%------------------------------------------------------------------------																
+																
+																
+																
+																
+																
+																
