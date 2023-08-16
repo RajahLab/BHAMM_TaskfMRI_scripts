@@ -253,7 +253,7 @@ for ID in IDs:
         cleaned_img = pe.clean_data(smoothed_img, trimmed_confounds_all_runs, confound_vars,mask_img)
         #Save 3d scans
         print('Saving 3D volumes')
-        pe.save_3d_scans(smoothed_img,output_folder,file_list, scans_to_trim=5)
+        pe.save_3d_scans(cleaned_img,output_folder,file_list, scans_to_trim=5)
 
     # # #Get onsets to censor
     pls_onset_df, remove_dict = plse.censor_onsets(onset_df,rowNum=63, censor_list=censor_list, tasksToInclude=onset_tasks)

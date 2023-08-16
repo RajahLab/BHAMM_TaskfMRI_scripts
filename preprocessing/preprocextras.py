@@ -390,24 +390,15 @@ def save_3d_scans(img, output_path, file_list=[], scans_to_trim=5):
         # print(filename)
         no_of_vols = temp_img.shape[3] - scans_to_trim
 
-        # if 'easy' in filename:
-        #     no_of_vols=282
-        # if 'hard' in filename:
-        #     no_of_vols=208
-
-
-        end_ind=end_ind+no_of_vols;
-        # print(start_ind)
-        # print(end_ind)
+       
+        end_ind=end_ind+no_of_vols
         for i in range(start_ind,end_ind):
             if end_ind>no_of_total_vols:
                 break
-            # else:
             img_3d=index_img(img,i)
             output_filename='_'.join(filename.split('_')[:-2])+'_desc-smooth_bold_%04d.nii'%(int(i))
-            # print(output_filename)
             img_3d.to_filename(os.path.join(output_path, output_filename))
-            start_ind=end_ind;
+            start_ind=end_ind
 
 def IndOutOfBound(img, index):
     if index < 0:
