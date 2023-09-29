@@ -247,12 +247,6 @@ x_rt <- bhamm %>% select(s2_meno_group, s2_age_std)
 # recognition RT - easy (`rt_recog_easy`), and recognition RT - hard (`rt_recog_hard`). 
 y_rt <- bhamm %>% select(rt_cs_easy, rt_cs_hard, rt_recog_easy, rt_recog_hard)
 
-# Standardize (i.e., z-score) all of the dependent variables. Ensure all are stored 
-# as numeric variables.
-y_rt <- y_rt %>% 
-  mutate_if(is.numeric, ~scale(., center = TRUE, scale = TRUE)) %>% 
-  mutate_if(is.numeric, ~as.numeric(.))
-
 # Identify and remove two participants (issue raised separately) who provided no 
 # correct recognition judgments for the easy task. These participants do not, by 
 # definition, have RT data for this condition, and `plsreg2` does not allow missing data.
