@@ -2,7 +2,7 @@
 
 These scripts were used in:
  
-"Menopause status and within group differences in chronological age affect the functional neural correlates of spatial context memory in middle-aged females -
+<b>Menopause status and within group differences in chronological age affect the functional neural correlates of spatial context memory in middle-aged females</b> -
 Arielle Crestol<sup>1</sup>\*, Sricharana Rajagopal<sup>2</sup> , Rikki Lissaman<sup>2,7</sup>, Annalise LaPlume<sup>2,8</sup>, Stamatoula Pasvanis<sup>2</sup>, Rosanna K. Olsen<sup>4,5</sup> , Gillian Einstein<sup>4,5</sup> , Emily Jacobs<sup>6</sup>, and M. Natasha Rajah<sup>2,3,7,8</sup>\*"
 
 \*Shared first authors
