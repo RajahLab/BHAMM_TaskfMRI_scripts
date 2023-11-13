@@ -1,3 +1,9 @@
+"""PLS extras module
+
+This module contains helper methods to run create PLS batch text files for task fMRI scans that have already been preprocesed.
+@author: Charana (charana.rajagopal@gmail.com) 
+"""
+
 import pandas
 import numpy
 import math
@@ -19,7 +25,26 @@ import itertools
 import preprocextras as pe
 
 def createNewOnsetDict(pls_onset_df, combine_onset_dict, onset_to_keep=[], censor_list=[]):
+    """ Read existing PLS onset vector dataframe and merge conditions to be combined.
 
+    Parameters
+    -----------
+    pls_onset_df : pandas dataframe
+        The dataframe contaning pls onset vectors from xlsx file
+    combine_onset_dict : dictionary
+        Dictionary of onset vectors to be combined
+    onsets_to_keep : list
+        List of onsets to be kept the same xlsx file
+    censor_list : list
+        List of onsets to be censored
+    
+    
+     Returns
+    -----------
+    new_onset_dict : dictionary
+        Dictionary of combined onset vectors
+    
+    """
     new_onset_dict=dict()
     for newCond,oldCond in combine_onset_dict.items():
         only_values=[value for key,value in pls_onset_df.items() if key in oldCond]
@@ -36,8 +61,31 @@ def createNewOnsetDict(pls_onset_df, combine_onset_dict, onset_to_keep=[], censo
     return new_onset_dict
 
 def createBatchTxtFiles(pls_onset_df,ID,output_path=os.getcwd(), script_path=os.getcwd(), nifti_path=os.getcwd(), combineSmiss=False, default_nifti_path=True, img_format='nii'):
+    """ Read PLS onset vector create batch test file to make PLS datamatts.
+
+    Parameters
+    -----------
+    pls_onset_df : pandas dataframe
+        The dataframe contaning pls onset vectors from xlsx file
+    ID: str
+        ID of participant
+    output_path: str
+        Path to save batch text files
+    script_path: str
+        Path to where PLS batch text file template is
+    nifti_path: str
+        Path to where preprocessed nifti scans are
+    combine_Smiss : bool
+        If Smis condition should be combined with Recog (default: False)
+    default_nifti_path : Bool
+        True if default image file format is nifti
+    img_format : str
+        File format to be specified iff image is not nifti (default: 'nii')
+   
+    """
     onset_tasks=[key for key,value in pls_onset_df.items()]
     # print(onset_tasks)
+
     ## Write into batch_fmri_subj*.txt files
     output_file=os.path.join(output_path,'batch_fmri_subj'+ID+'.txt');
     with open(os.path.join(script_path,'batch_fmri_subjXXX.txt')) as f:
@@ -100,6 +148,19 @@ def createBatchTxtFiles(pls_onset_df,ID,output_path=os.getcwd(), script_path=os.
 
 
 def CountNumOfEvents(pls_onset_df):
+    """ Count number of trials for each onset vector.
+
+    Parameters
+    -----------
+    pls_onset_df : pandas dataframe
+        The dataframe contaning pls onset vectors from xlsx file
+   
+     Returns
+    -----------
+    count_dict : dictionary
+        Dictionary with number of trials for each onset vector
+    
+    """
     tasksToInclude=[key for key,value in pls_onset_df.items()]
 
     # count_df=pandas.DataFrame(columns = list(pls_onset_df.columns))
@@ -115,7 +176,73 @@ def CountNumOfEvents(pls_onset_df):
     # count_df=count_df.append(pandas.Series(count,index=count_df.columns), ignore_index=True)
     return count_dict
 
+def censor_onsets_from_list(onset_df, rowNum=0, remove_list=None, tasksToInclude=None):
+    """ censor onsets from pls onset dataframe with censor list read from QC report table.
+
+    Use this if creating batch text files after smooth/regress preprocessing has been done.
+
+    Parameters
+    -----------
+    onset_df : pandas dataframe
+        The dataframe contaning pls onset vectors from xlsx file
+    rowNum : int
+        Row number where the PLS onset vectors begin in onset xlsx file
+    remove_list : list
+        List of onsets to be censoredd
+    tasksToInclude : list
+        List of onsets vectors to be kept the same as onsets xlsx file
+    
+    
+     Returns
+    -----------
+    pls_onset_dict_censored : dictionary
+        Dictionary containing the final censored onsets
+    
+    """
+    pls_onset_df=onset_df.iloc[rowNum:, 1:].T
+    pls_onset_df.columns=pls_onset_df.iloc[0]
+    pls_onset_df=pls_onset_df[2:]
+    pls_onset_df = pls_onset_df.dropna(how='all')
+    keep_cols=[c for c in pls_onset_df.columns if c in tasksToInclude]
+    # print(keep_cols)
+    pls_onset_df=pls_onset_df[keep_cols]
+    pls_onset_dict_censored=dict()
+
+    for (onsetName, onsetValue) in pls_onset_df.iteritems():
+        # if "".join(re.split("[^a-zA-Z]+", task)) in onsetName.lower():
+        only_int = onsetValue.tolist()
+        only_int = [x for x in only_int if str(x) != 'nan']
+
+        only_int=[x for x in only_int if x not in remove_list]
+        pls_onset_dict_censored[onsetName]=only_int
+    
+    return pls_onset_dict_censored
+
+
 def censor_onsets(onset_df, rowNum=0, censor_list=None, tasksToInclude=None):
+    """ censor onsets from pls onset dataframe with censor list read from QC report table.
+
+    Use this if creating batch text files in the same scripts as smooth/regress preprocessing
+
+    Parameters
+    -----------
+    onset_df : pandas dataframe
+        The dataframe contaning pls onset vectors from xlsx file
+    rowNum : int
+        Row number where the PLS onset vectors begin in onset xlsx file
+    censor_list : list
+        List of onsets to be censored
+    tasksToInclude : list
+        List of onsets vectors to be kept the same as onsets xlsx file
+    
+    
+     Returns
+    -----------
+    pls_onset_dict_censored : dictionary
+        Dictionary containing the final onsets after censoring
+    remmove_dict : dictionary
+        Dictionary containing the onset vector/values that were censored for the QC report
+    """
     pls_onset_df=onset_df.iloc[rowNum:, 1:].T
     pls_onset_df.columns=pls_onset_df.iloc[0]
     pls_onset_df=pls_onset_df[2:]
@@ -127,8 +254,9 @@ def censor_onsets(onset_df, rowNum=0, censor_list=None, tasksToInclude=None):
     pls_onset_dict_censored=dict()
     remove_list=[]
     remove_list_onset_name=[]
+    
 
-    for (onsetName, onsetValue) in pls_onset_df.iteritems():
+    for (onsetName, onsetValue) in pls_onset_df.items():
         # if "".join(re.split("[^a-zA-Z]+", task)) in onsetName.lower():
         only_int = onsetValue.tolist()
         only_int = [x for x in only_int if str(x) != 'nan']
