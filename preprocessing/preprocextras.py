@@ -186,7 +186,7 @@ def get_plot(trimmed_confounds, ID, brain_time_series, timing=None, FD_thresh=1.
     ax2 = fig.add_subplot(212)
     ax2.axhline(FD_thresh, lw=.5, label='%s'%(str(FD_thresh)),color='r', linestyle='-', alpha=.75)
     ax2.set_facecolor((0.5,0.5,0.5))
-    ax2.gri
+    ax2.grid()
     ax2.set(ylabel='FD (mm)')
     ax2.yaxis.label.set_color('white')
     ax2.xaxis.label.set_color('white')
